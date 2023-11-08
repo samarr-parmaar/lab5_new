@@ -1,4 +1,15 @@
-Samar wrote the shifter and ALU code, while ethan worked on the regfile
-We both worked together on putting all of the smaller modules into the full datapath and designing the testbench 
-We also both tested it on the De1-SoC together to ensure that it was working
+
+student 1 : Samarr Parmaar
+student 2 : Ethan Casias
+
+stage 1:-
+Samarr wrote the shifter and ALU code, while ethan worked on the regfile.
+
+stage 2:-
+both the participants met multiple times and wored on integrating all the modules together into the datapath.sv.
+
+stage 3:-
+both Ethan and Samarr finally uploaded the code onto the DE1-Soc and tried to impliment the datapath using different inputs.
+
+overall both participants contributed equally to the entire lab code.
 
