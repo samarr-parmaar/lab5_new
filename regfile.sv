@@ -5,13 +5,15 @@ input [2:0] writenum, readnum;
 input write, clk;
 output reg [15:0] data_out;
 
+//defines all of the internal signals
 wire [7:0] decoder_1;
 wire [7:0] decoder_2;
 wire [7:0] regload;
 reg [15:0] R0, R1, R2, R3, R4, R5, R6, R7;
 
+	//3:8 decoder module with the writenum, transforming to one hot
 	Dec3_8 dut_dec1(writenum, decoder_1);
-
+	//assigning if each register should be written into depending on writenum and write signals
 	assign regload[0] = decoder_1[0] & write;
 	assign regload[1] = decoder_1[1] & write;
 	assign regload[2] = decoder_1[2] & write;
@@ -21,6 +23,7 @@ reg [15:0] R0, R1, R2, R3, R4, R5, R6, R7;
 	assign regload[6] = decoder_1[6] & write;
 	assign regload[7] = decoder_1[7] & write;
 
+	//initializing 8 instanes of the regsiter with load enable to make up the complete regfile
 	vDFFE_0 #(16) dut_0(clk, regload[0], data_in, R0);
 	vDFFE_1 #(16) dut_1(clk, regload[1], data_in, R1);
 	vDFFE_2 #(16) dut_2(clk, regload[2], data_in, R2);
@@ -30,12 +33,13 @@ reg [15:0] R0, R1, R2, R3, R4, R5, R6, R7;
 	vDFFE_6 #(16) dut_6(clk, regload[6], data_in, R6);
 	vDFFE_7 #(16) dut_7(clk, regload[7], data_in, R7);	
 
+	//initializing a second instance of the 3:8 decoder module for readnum
 	Dec3_8 dut_dec2(readnum, decoder_2);
 
 	always_comb begin
 
 	case(decoder_2)
-	
+		//depending on the value of readnum, loads a register into data_out 
 	8'b00000001 : data_out = R0;
 	8'b00000010 : data_out = R1;
 	8'b00000100 : data_out = R2;
@@ -55,7 +59,7 @@ endmodule
 
 
 
-module Dec3_8(in, out);
+module Dec3_8(in, out); //3:8 decoder module
 
 	input [2:0] in;
 	output [7:0] out;
@@ -64,7 +68,7 @@ module Dec3_8(in, out);
 
 endmodule
 
-module vDFFE_0(clk, en, in, out);
+module vDFFE_0(clk, en, in, out); //register with load enable module
 	
 	parameter n = 1;
 	input clk, en;
