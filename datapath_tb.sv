@@ -9,7 +9,7 @@ module datapath_tb;
 	wire [15:0] datapath_out;
 
 	`define undefined 16'bxxxxxxxxxxxxxxxx
-
+	//initialize the datapath module
 	datapath DUT ( .clk         (clk), // recall from Lab 4 that KEY0 is 1 when NOT pushed
 
                 // register operand fetch stage
@@ -44,8 +44,9 @@ module datapath_tb;
   	wire [15:0] R5 = DUT.REGFILE.R5;
   	wire [15:0] R6 = DUT.REGFILE.R6;
   	wire [15:0] R7 = DUT.REGFILE.R7;
-
-	task check1;
+	//internal signals for all of the registers
+	
+	task check1; //task for checkin all of the outputs of the datapath
 
 	input expected_Z_out;
 	input [15:0] expected_datapath_out;
@@ -66,7 +67,7 @@ module datapath_tb;
 
 	endtask
 
-	task check2;
+	task check2; //task for checking the values stored in all of the registers
 
 	input [15:0] expected_R0;
 	input [15:0] expected_R1;
@@ -149,7 +150,7 @@ module datapath_tb;
     	write = 0; vsel=0; loada=0; loadb=0; asel=0; bsel=0; loadc=0; loads=0;
   	readnum = 0; writenum=0;
   	shift = 0; ALUop=0;
-
+	//initializes all of the signals
 	#10;
 
 	
@@ -159,7 +160,7 @@ module datapath_tb;
 	write = 1'b1;
 	vsel = 1'b1;
 	#10;
-
+		//load R0 with the value of 7, and then checks that it was loaded properly
 	check2(16'b0000000000000111, `undefined, `undefined, `undefined, `undefined, `undefined, `undefined, `undefined);
 
 	datapath_in = 16'b0000000000000010;
@@ -168,46 +169,47 @@ module datapath_tb;
 	vsel = 1'b1;
 	#10;
 	write = 1'b0;
-
+	//loads R1 with the value of 2 and then checks
 	check2(16'b0000000000000111, 16'b0000000000000010, `undefined, `undefined, `undefined, `undefined, `undefined, `undefined);
 
 	readnum = 3'b000;
 	loadb = 1'b1;
 	#10;
 	loadb = 1'b0;
-
+	//loads b with R0 and the loads A with R1
 	readnum = 3'b001;
 	loada = 1'b1;
 	#10;
 	loada = 1'b0;
 
 	
-   	shift = 2'b01;
+   	shift = 2'b01; //shifts R1 by 2, doubling value from 7 to 14
   	asel = 1'b0;
-  	bsel = 1'b0;
-  	ALUop = 2'b00;
+  	bsel = 1'b0; //disables select signal for reg A and reg B
+  	ALUop = 2'b00; //sets ALU operation to addition
   	loadc = 1'b1;
-  	loads = 1'b1;
+  	loads = 1'b1; //loads the output from the ALU to datapath_out
 	#10;
 	loadc = 1'b0;
     	loads = 1'b0;
-
+	
 	write = 1'b1;
-    	writenum = 3'b010;
+	writenum = 3'b010; //writes the new value of datapath_out in to R2
     	vsel = 1'b0;
     	#10;
     	write = 1'b0;
 
 	check2(16'b0000000000000111, 16'b0000000000000010, 16'b0000000000010000, `undefined, `undefined, `undefined, `undefined, `undefined);
-
+	//checks that all of the registers have the appropriate value
 	check1( 1'b0, 16'b0000000000010000);
-
+	//checks that the outputs of the module are correct
+		
 	datapath_in = 16'b0000000000000010;
 	writenum = 3'b110;
 	write = 1'b1;
 	vsel = 1'b1;
 	#10;
-
+	//writes a new value into R6, and checks that it was loaded
 	check2(16'b0000000000000111, 16'b0000000000000010, 16'b0000000000010000, `undefined, `undefined, `undefined, 16'b0000000000000010, `undefined);
 
 	datapath_in = 16'b0000000000000001;
@@ -216,24 +218,25 @@ module datapath_tb;
 	vsel = 1'b1;
 	#10;
 	write = 1'b0;
-
+	//writes a new value to R7 and checks
 	check2(16'b0000000000000111, 16'b0000000000000010, 16'b0000000000010000, `undefined, `undefined, `undefined, 16'b0000000000000010, 16'b0000000000000001);
 
 	readnum = 3'b111;
 	loadb = 1'b1;
 	#10;
 	loadb = 1'b0;
-
+	//loads b with R7
+		
 	readnum = 3'b110;
 	loada = 1'b1;
 	#10;
 	loada = 1'b0;
+	loads A with R6
 
-	
    	shift = 2'b00;
   	asel = 1'b0;
   	bsel = 1'b0;
-  	ALUop = 2'b01;
+  	ALUop = 2'b01; //performs subtraction and loads it to the outut
   	loadc = 1'b1;
   	loads = 1'b1;
 	#10;
@@ -245,11 +248,11 @@ module datapath_tb;
     	vsel = 1'b0;
     	#10;
     	write = 1'b0;
-
+	//loads the output into R5
 	check2(16'b0000000000000111, 16'b0000000000000010, 16'b0000000000010000, `undefined, `undefined, 16'b0000000000000001, 16'b0000000000000010, 16'b0000000000000001);
-
+	//checks that all registers are what they should be 
 	check1( 1'b0, 16'b0000000000000001);
-
+	//checks that the outputs are correct
 	
 
 	
@@ -263,7 +266,7 @@ module datapath_tb;
 	else begin
 	$display("failed");
 	end
-
+	//display pass or fail
 	
 	
 
