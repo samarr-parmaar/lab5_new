@@ -1,0 +1,4 @@
+Samar wrote the shifter and ALU code, while ethan worked on the regfile
+We both worked together on putting all of the smaller modules into the full datapath and designing the testbench 
+We also both tested it on the De1-SoC together to ensure that it was working
+
