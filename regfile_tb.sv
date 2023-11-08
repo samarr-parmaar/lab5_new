@@ -5,9 +5,10 @@ module regfile_tb;
 	reg write, clk, err;
 	wire [15:0] data_out;
 
+	//initializes our regfile module
 	regfile DUT(.data_in (data_in),.writenum (writenum),.write (write),.readnum (readnum),.clk (clk),.data_out (data_out));
 
-	task check;
+	task check; //checker to check that data_out is correct
 
 	input [15:0] expected_out;
 
@@ -40,7 +41,7 @@ module regfile_tb;
 
 
 	initial begin
-
+	//initializes err signal, and loads a value of 1 into R0, and then copies it to data_out
 	err = 1'b0;
 	data_in = 16'b0000000000000001;
 	writenum = 3'b000;
@@ -49,7 +50,7 @@ module regfile_tb;
 	#10;
 
 	check( 16'b0000000000000001 );
-
+		//checks that the value of 1 has been read from R0
 	data_in = 16'b0000000000000010;
 	writenum = 3'b001;
 	write = 1'b1;
@@ -57,7 +58,8 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000000010);
-
+	//same thing, but with a value of 2 into R1
+		
 	data_in = 16'b0000000000000011;
 	writenum = 3'b010;
 	write = 1'b1;
@@ -65,7 +67,8 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000000011);
-
+	//loads a value of 3 into R2
+		
 	data_in = 16'b0000000000000100;
 	writenum = 3'b011;
 	write = 1'b1;
@@ -73,7 +76,8 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000000100);
-
+	//loads and reads a value of 4 into R3
+		
 	data_in = 16'b0000000000000101;
 	writenum = 3'b100;
 	write = 1'b1;
@@ -81,15 +85,17 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000000101);
-
+	//loads and reads a value of 5 into R4
+		
 	data_in = 16'b0000000000000110;
 	writenum = 3'b101;
 	write = 1'b1;
 	readnum = 3'b101;
 	#10;
-
+	
 	check(16'b0000000000000110);
-
+	//loads and reads a value of 6 into R5
+		
 	data_in = 16'b0000000000000111;
 	writenum = 3'b110;
 	write = 1'b1;
@@ -97,7 +103,8 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000000111);
-
+	//loads and reads a value of 7 into R6
+		
 	data_in = 16'b0000000000001000;
 	writenum = 3'b111;
 	write = 1'b1;
@@ -105,7 +112,8 @@ module regfile_tb;
 	#10;
 
 	check(16'b0000000000001000);
-
+	//loads and reads a value of 8 into R7
+		
 	data_in = 16'b0000000000001001;
 	writenum = 3'b000;
 	write = 1'b1;
