@@ -9,21 +9,21 @@ output reg [15:0] sout;
 
 	always_comb begin
 
-	case(shift)
+		case(shift) //case statement for operation to perform depending in the input
 
-	2'b00 : sout = in;
+	2'b00 : sout = in; //does not shift the input of shift = 00
 
-	2'b01 : begin
+	2'b01 : begin //if shift = 01, shifts the signal on but to the left, with LSB being 0
 		sout = in << 1;
 		sout[0] = 1'b0;
 		end
 
-	2'b10 : begin
+	2'b10 : begin //if shift is 10, shifts one to the right with MSB being 0
 		sout = in >> 1;
 		sout[15] = 1'b0;
 		end
 
-	2'b11 : begin
+	2'b11 : begin	//if shift is 10, shifts one to the right with MSB being MSB
 		sout = in >> 1;
 		sout[15] = `MSB;
 		end
@@ -36,4 +36,5 @@ output reg [15:0] sout;
 
 	end
 
-endmodule
+endmodule
+
