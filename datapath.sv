@@ -7,8 +7,8 @@ module datapath(clk, readnum, vsel, loada, loadb, shift, asel, bsel, ALUop, load
 	input [1:0] shift, ALUop;
 	input [15:0] datapath_in;
 	output Z_out;
-	output [15:0] datapath_out;
-
+	output [15:0] datapath_out; //initializes the inputs and outputs
+	
 	wire [15:0] data_in;
 	wire [15:0] data_out;
 
@@ -18,27 +18,27 @@ module datapath(clk, readnum, vsel, loada, loadb, shift, asel, bsel, ALUop, load
 	wire [15:0] Ain;
 	wire [15:0] Bin;
 	wire Z;
-	wire [15:0] out;
+	wire [15:0] out;  //internal signals
 	
 
-	assign data_in = vsel ? datapath_in : datapath_out;
+	assign data_in = vsel ? datapath_in : datapath_out; //mux for which signal is input into the regfile 
 
-	regfile REGFILE(data_in,writenum,write,readnum,clk,data_out);
+	regfile REGFILE(data_in,writenum,write,readnum,clk,data_out); //initializing regfile module
 
-	vDFFE #(16) A(clk,loada,data_out,regA);
+	vDFFE #(16) A(clk,loada,data_out,regA); //initializes register for A input to ALU
 
-	vDFFE #(16) B(clk,loadb,data_out,in);
+	vDFFE #(16) B(clk,loadb,data_out,in);   //initializes register for B input to ALU
 
-	shifter U1(in,shift,sout);
+	shifter U1(in,shift,sout); //initializes shifter module
 
-	assign Ain = asel ? 16'b0000000000000000 : regA;
+	assign Ain = asel ? 16'b0000000000000000 : regA; //multiplexer for A
 
-	assign Bin = bsel ? {11'b0,datapath_in[4:0]} : sout;
+	assign Bin = bsel ? {11'b0,datapath_in[4:0]} : sout; //multiplexer for B
 
-	ALU U2(Ain,Bin,ALUop,out,Z);
+	ALU U2(Ain,Bin,ALUop,out,Z); //the arithmetic Unit
 
-	vDFFE #(16) C(clk,loadc,out,datapath_out);
-	vDFFE status(clk,loads,Z,Z_out);
+	vDFFE #(16) C(clk,loadc,out,datapath_out); //register for output
+	vDFFE status(clk,loads,Z,Z_out); //register for Z
 
 
 	
@@ -48,7 +48,7 @@ module datapath(clk, readnum, vsel, loada, loadb, shift, asel, bsel, ALUop, load
 endmodule
 
 
-module vDFFE(clk, en, in, out);
+module vDFFE(clk, en, in, out); //module for register with load enable
 	
 	parameter n = 1;
 	input clk, en;
