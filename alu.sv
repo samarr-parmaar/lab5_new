@@ -7,19 +7,19 @@ output reg Z;
 
 	always_comb begin
 
-	if( ALUop == 2'b00 ) begin
+		if( ALUop == 2'b00 ) begin //specifies the addition operator
 		
 		out = Ain + Bin;
 
 	end
 
-	else if ( ALUop == 2'b01 ) begin
+		else if ( ALUop == 2'b01 ) begin   //specifies the subtraction operator
 	
 		out = Ain - Bin;
 
 	end
 
-	else if ( ALUop == 2'b10 ) begin
+		else if ( ALUop == 2'b10 ) begin //specifies the and operator
 	
 		out = Ain & Bin;
 
@@ -27,13 +27,13 @@ output reg Z;
 
 	else begin
 
-		out = ~Bin;
+		out = ~Bin; //if none of the above are true, it must be the NOT operation in the ALU
 
 	end
 
 	
 
-	if( out == 16'b0000000000000000 ) begin
+		if( out == 16'b0000000000000000 ) begin //sets Z if all of the output are 0
 	
 		Z = 1'b1;
 
@@ -41,7 +41,7 @@ output reg Z;
 
 	else begin
 
-		Z = 1'b0;
+		Z = 1'b0; //if out != 0, then Z stays at 0
 
 	end
 
